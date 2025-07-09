@@ -44,6 +44,10 @@ async def verify_requests():
     # Busca os posts pendentes de moderação que entraram na fila até o horário de início da solicitação
     posts_pending_moderation = await mysql.execute("SELECT `reddit_id`, `post_title`, `post_author_name` FROM `posts_unmoderated_reddit` WHERE `datetime_register` < TIMESTAMP(%s) AND `status` = %s ORDER BY `datetime_register`", [datetime_init_request.format("YYYY-MM-DD HH:mm:ss"), STATUS_POSTS_NOT_MODERATED])
 
+    if not posts_pending_moderation:
+      register("A query SELECT ao banco de dados não retornou nada")
+      return
+
     for ppm in posts_pending_moderation:
       post_id = ppm[0]
 
