@@ -31,7 +31,7 @@ async def verify_requests():
     await mysql.start()
     reddit = RedditRequest()
 
-    request_with_status_2 = await mysql.execute("SELECT `id`, `code`, `datetime_create`, `action_type` FROM `actions_moderations` WHERE `status` = %s ORDER BY `datetime_create` ASC", [STATUS_REQUEST_PENDING])
+    request_with_status_2 = await mysql.execute("SELECT `id`, `code`, `datetime_create`, `action_type` FROM `actions_moderations` WHERE `status` = %s ORDER BY `datetime_create` DESC LIMIT 50", [STATUS_REQUEST_PENDING])
 
     # Percorre as solicitações do banco de dados com status
     if not request_with_status_2:
@@ -45,7 +45,7 @@ async def verify_requests():
         action_type = r[3]
 
         # Busca os posts pendentes de moderação que entraram na fila até o horário de início da solicitação
-        posts_pending_moderation = await mysql.execute("SELECT `reddit_id`, `post_title`, `post_author_name` FROM `posts_unmoderated_reddit` WHERE `datetime_register` <= TIMESTAMP(%s) AND `status` = %s ORDER BY `datetime_register`", [datetime_init_request.format("YYYY-MM-DD HH:mm:ss"), STATUS_POSTS_NOT_MODERATED])
+        posts_pending_moderation = await mysql.execute("SELECT `reddit_id`, `post_title`, `post_author_name` FROM `posts_unmoderated_reddit` WHERE `datetime_register` <= TIMESTAMP(%s) AND `status` = %s ORDER BY `datetime_register` DESC LIMIT 50;", [datetime_init_request.format("YYYY-MM-DD HH:mm:ss"), STATUS_POSTS_NOT_MODERATED])
 
         if not posts_pending_moderation:
             register("A query SELECT ao banco de dados não retornou nada.")
