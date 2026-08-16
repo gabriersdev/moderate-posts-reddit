@@ -1,7 +1,6 @@
 # Moderate Posts Reddit
 
-É um bot que aprova posts no reddit de um servidor, de acordo com as solicitações de moderação registradas no banco de dados.  
-Todas as solicitações que têm o status 2 são tratadas. E os posts que entraram na fila de moderação até a data e hora do início da solicitação são moderados.
+É um bot que aprova posts no reddit de um servidor, de acordo com as solicitações de moderação registradas no banco de dados. Todas as solicitações que têm o status 2 são tratadas. E os posts que entraram na fila de moderação até a data e hora do início da solicitação são moderados.
 
 Explicando:
 - O post 123 entrou na fila de moderação às 10:00
